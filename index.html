@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sigma Gym House</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E6E8EA;--ink:#1D2329;--mute:#5A646E;--line:#C5CACF;--card:#F4F5F6;--red:#C8312B;--blue:#2456A6;--yellow:#E0B01E;--green:#2E8B57}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.55}
+h1,h2,h3{font-stretch:125%;font-weight:800;line-height:1.05;margin:0;letter-spacing:-.01em}
+h1{font-size:clamp(2.6rem,9vw,6rem)}
+h2{font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:1.2rem}
+h3{font-size:1.15rem}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+header{border-bottom:2px solid var(--ink);position:sticky;top:0;background:var(--bg);z-index:5}
+header .wrap{display:flex;align-items:center;gap:1.25rem;height:64px}
+.logo{font-stretch:125%;font-weight:900;text-decoration:none;font-size:1.2rem;margin-right:auto}
+nav a{text-decoration:none;margin-right:1rem;font-weight:500}
+nav a:hover{text-decoration:underline}
+.btn{background:var(--ink);color:#fff;border:2px solid var(--ink);padding:.6rem 1.1rem;font-weight:700;border-radius:4px}
+.btn:hover{background:#000}
+.btn.ghost{background:transparent;color:var(--ink)}
+.btn.ghost:hover{background:var(--ink);color:#fff}
+.btn.red{background:var(--red);border-color:var(--red)}
+section{padding:4rem 0}
+.hero{padding:3.5rem 0 4rem}
+.hero p{max-width:52ch;color:var(--mute);margin:1.2rem 0 0}
+/* barbell */
+.rig{margin-top:2.5rem;background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:1.5rem 1rem 1.25rem}
+.stage{height:190px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.stage:before{content:"";position:absolute;left:0;right:0;top:50%;height:8px;margin-top:-4px;background:#8A9099;border-radius:4px}
+.stack{display:flex;align-items:center;position:relative;min-width:0}
+.stack.l{flex-direction:row-reverse}
+.plate{width:16px;margin:0 2px;border-radius:3px;border:2px solid rgba(0,0,0,.35);animation:drop .25s ease-out}
+.collar{width:60px;height:24px;background:#5A646E;border-radius:3px;position:relative;margin:0 4px}
+@keyframes drop{from{transform:translateY(-30px);opacity:0}}
+.ctrl{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin-top:1rem}
+.chip{border:2px solid var(--ink);background:#fff;padding:.4rem .8rem;border-radius:999px;font-weight:700;display:flex;align-items:center;gap:.4rem}
+.chip i{width:12px;height:12px;border-radius:50%;display:inline-block;border:1px solid rgba(0,0,0,.4)}
+.total{margin-left:auto;font-stretch:125%;font-weight:800;font-size:1.6rem}
+.hint{color:var(--mute);font-size:.9rem;margin:.6rem 0 0}
+/* classes */
+table{width:100%;border-collapse:collapse;background:var(--card);border:2px solid var(--ink)}
+th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--line)}
+th{background:var(--ink);color:#fff;font-weight:600}
+.scroll{overflow-x:auto}
+/* plans */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem}
+.plan{background:var(--card);border:2px solid var(--ink);border-top-width:14px;padding:1.4rem;border-radius:0 0 6px 6px}
+.plan.a{border-top-color:var(--green)}.plan.b{border-top-color:var(--blue)}.plan.c{border-top-color:var(--red)}
+.price{font-stretch:125%;font-weight:800;font-size:2rem;margin:.6rem 0}
+.price small{font-size:.9rem;font-weight:500;color:var(--mute)}
+.plan ul{padding-left:1.1rem;margin:0 0 1.2rem;color:var(--mute)}
+footer{border-top:2px solid var(--ink);padding:2rem 0;color:var(--mute);font-size:.95rem}
+/* dialog */
+dialog{border:2px solid var(--ink);border-radius:6px;padding:0;width:min(400px,92vw);background:var(--card);color:var(--ink)}
+dialog::backdrop{background:rgba(29,35,41,.6)}
+.tabs{display:flex}
+.tabs button{flex:1;padding:.9rem;border:0;background:var(--line);font-weight:700;border-bottom:2px solid var(--ink)}
+.tabs button[aria-selected=true]{background:var(--card);border-bottom-color:var(--card)}
+form{padding:1.4rem;display:grid;gap:.9rem}
+label{display:grid;gap:.3rem;font-weight:600;font-size:.95rem}
+input,select{font:inherit;padding:.6rem .7rem;border:2px solid var(--ink);border-radius:4px;background:#fff}
+.err{color:var(--red);font-weight:600;min-height:1.3em;margin:0;font-size:.95rem}
+.x{float:right;background:none;border:0;font-size:1.4rem;padding:.3rem .8rem}
+/* member */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1rem;margin:1.5rem 0 2.5rem}
+.stat{background:var(--card);border:2px solid var(--ink);padding:1rem 1.2rem;border-radius:6px}
+.stat b{display:block;font-stretch:125%;font-weight:800;font-size:2rem}
+.list{display:grid;gap:.6rem;margin:0;padding:0;list-style:none}
+.list li{background:var(--card);border:2px solid var(--ink);border-radius:6px;padding:.8rem 1rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.list li span{margin-right:auto}
+.list .btn{padding:.4rem .8rem}
+.booked{border-left:12px solid var(--green)!important}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){.plate{animation:none}html{scroll-behavior:auto}}
+@media (max-width:640px){nav{display:none}.plate{width:11px}.collar{width:36px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="logo" href="#top" id="home">Sigma HOUSE</a>
+    <nav id="nav"><a href="#classes">Classes</a><a href="#plans">Membership</a></nav>
+    <button class="btn" id="authBtn">Log in</button>
+  </div>
+</header>
+
+<main id="site">
+  <section class="hero wrap" id="top">
+    <h1>Load the bar.</h1>
+    <p>Sigma Gym House is a strength gym with free weights, open floor and small coached classes. Pick your plates below, then join us for the real thing.</p>
+    <div class="rig">
+      <div class="stage" aria-label="Barbell"><div class="stack l" id="left"></div><div class="collar"></div><div class="stack" id="right"></div></div>
+      <div class="ctrl" id="plateBtns"></div>
+      <div class="ctrl"><button class="btn ghost" id="undo">Remove plate</button><button class="btn ghost" id="clear">Clear bar</button><span class="total" id="total">20 kg</span></div>
+      <p class="hint">Bar weighs 20 kg. Plates are added in pairs, one each side.</p>
+    </div>
+  </section>
+
+  <section id="classes" class="wrap">
+    <h2>Weekly classes</h2>
+    <div class="scroll"><table><thead><tr><th>Day</th><th>Time</th><th>Class</th><th>Coach</th></tr></thead><tbody id="tbl"></tbody></table></div>
+    <p class="hint">Members can book a spot after logging in.</p>
+  </section>
+
+  <section id="plans" class="wrap">
+    <h2>Membership</h2>
+    <div class="plans">
+      <div class="plan a"><h3>Off-peak</h3><div class="price">₹1,500<small> / month</small></div><ul><li>Gym floor 10am to 4pm</li><li>Locker access</li></ul><button class="btn" data-join="Off-peak">Join Off-peak</button></div>
+      <div class="plan b"><h3>Full access</h3><div class="price">₹2,400<small> / month</small></div><ul><li>Gym floor, open hours</li><li>Two classes per week</li><li>Locker access</li></ul><button class="btn" data-join="Full access">Join Full access</button></div>
+      <div class="plan c"><h3>Coached</h3><div class="price">₹5,000<small> / month</small></div><ul><li>Everything in Full access</li><li>Four 1-on-1 sessions</li><li>Personal programme</li></ul><button class="btn red" data-join="Coached">Join Coached</button></div>
+    </div>
+  </section>
+</main>
+
+<main id="member" class="wrap" hidden>
+  <section>
+    <h1 style="font-size:clamp(2rem,6vw,3.6rem)" id="hello"></h1>
+    <div class="stats">
+      <div class="stat"><span>Plan</span><b id="sPlan"></b></div>
+      <div class="stat"><span>Sessions logged</span><b id="sSess">0</b></div>
+      <div class="stat"><span>Classes booked</span><b id="sBook">0</b></div>
+    </div>
+    <button class="btn" id="logSession">Log today's session</button>
+    <p class="hint" id="lastSess"></p>
+    <h2 style="margin-top:2.5rem">Book a class</h2>
+    <ul class="list" id="bookList"></ul>
+  </section>
+</main>
+
+<footer><div class="wrap">Sigma Gym House. Demo site: accounts are stored only in this browser.</div></footer>
+
+<dialog id="dlg">
+  <button class="x" id="closeDlg" aria-label="Close">×</button>
+  <div class="tabs" role="tablist"><button role="tab" id="tLogin" aria-selected="true">Log in</button><button role="tab" id="tSign" aria-selected="false">Sign up</button></div>
+  <form id="form" novalidate>
+    <label id="nameRow" hidden>Full name<input id="name" autocomplete="name"></label>
+    <label>Email<input id="email" type="email" autocomplete="email" required></label>
+    <label>Password<input id="pw" type="password" autocomplete="current-password" minlength="6" required></label>
+    <label id="planRow" hidden>Plan<select id="plan"><option>Off-peak</option><option selected>Full access</option><option>Coached</option></select></label>
+    <p class="err" id="err" role="alert"></p>
+    <button class="btn" id="submit" type="submit">Log in</button>
+  </form>
+</dialog>
+
+<script>
+const $=id=>document.getElementById(id);
+const CLASSES=[
+ {id:'c1',day:'Mon',time:'6:30 am',name:'Barbell Basics',coach:'Meera'},
+ {id:'c2',day:'Tue',time:'7:00 pm',name:'Squat Club',coach:'Arjun'},
+ {id:'c3',day:'Wed',time:'6:30 am',name:'Kettlebell Circuit',coach:'Rohan'},
+ {id:'c4',day:'Thu',time:'7:00 pm',name:'Deadlift Lab',coach:'Meera'},
+ {id:'c5',day:'Fri',time:'6:00 pm',name:'Mobility & Core',coach:'Sana'},
+ {id:'c6',day:'Sat',time:'8:00 am',name:'Team Strength',coach:'Arjun'}];
+const store={
+ get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},
+ set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+};
+const users=()=>store.get('ch_users',{});
+async function hash(s){const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s));return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}
+
+/* barbell */
+const PLATES=[[25,'#C8312B',150],[20,'#2456A6',140],[15,'#E0B01E',120],[10,'#2E8B57',100],[5,'#F2F2F2',76],[2.5,'#8A9099',60]];
+let loaded=[];
+PLATES.forEach(([kg,c])=>{const b=document.createElement('button');b.className='chip';b.innerHTML=`<i style="background:${c}"></i>${kg} kg`;b.onclick=()=>{if(loaded.length<6){loaded.push(kg);drawBar()}};$('plateBtns').appendChild(b)});
+$('undo').onclick=()=>{loaded.pop();drawBar()};
+$('clear').onclick=()=>{loaded=[];drawBar()};
+function drawBar(){
+ ['left','right'].forEach(id=>{$(id).innerHTML=loaded.map(kg=>{const p=PLATES.find(x=>x[0]===kg);return `<div class="plate" style="background:${p[1]};height:${p[2]}px"></div>`}).join('')});
+ $('total').textContent=(20+2*loaded.reduce((a,b)=>a+b,0))+' kg';
+}
+drawBar();
+
+/* timetable */
+$('tbl').innerHTML=CLASSES.map(c=>`<tr><td>${c.day}</td><td>${c.time}</td><td>${c.name}</td><td>${c.coach}</td></tr>`).join('');
+
+/* dialog */
+let mode='login';
+function setMode(m){
+ mode=m;const s=m==='signup';
+ $('tLogin').setAttribute('aria-selected',!s);$('tSign').setAttribute('aria-selected',s);
+ $('nameRow').hidden=!s;$('planRow').hidden=!s;
+ $('submit').textContent=s?'Create account':'Log in';
+ $('pw').autocomplete=s?'new-password':'current-password';$('err').textContent='';
+}
+function openDlg(m,plan){setMode(m);if(plan)$('plan').value=plan;$('dlg').showModal();$('email').focus()}
+$('tLogin').onclick=()=>setMode('login');$('tSign').onclick=()=>setMode('signup');
+$('closeDlg').onclick=()=>$('dlg').close();
+document.querySelectorAll('[data-join]').forEach(b=>b.onclick=()=>openDlg('signup',b.dataset.join));
+
+$('form').addEventListener('submit',async e=>{
+ e.preventDefault();
+ const email=$('email').value.trim().toLowerCase(),pw=$('pw').value,U=users();
+ if(!/^\S+@\S+\.\S+$/.test(email))return $('err').textContent='Enter a valid email address.';
+ if(pw.length<6)return $('err').textContent='Password must be at least 6 characters.';
+ const h=await hash(pw);
+ if(mode==='signup'){
+  if(!$('name').value.trim())return $('err').textContent='Enter your name.';
+  if(U[email])return $('err').textContent='That email already has an account. Log in instead.';
+  U[email]={name:$('name').value.trim(),hash:h,plan:$('plan').value,booked:[],sessions:[]};
+  store.set('ch_users',U);
+ }else if(!U[email]||U[email].hash!==h){
+  return $('err').textContent='Email or password is incorrect.';
+ }
+ store.set('ch_session',email);$('form').reset();$('dlg').close();render();
+});
+
+/* auth state + views */
+const me=()=>{const e=store.get('ch_session',null);const u=users()[e];return u?{e,u}:null};
+function save(e,u){const U=users();U[e]=u;store.set('ch_users',U)}
+$('authBtn').onclick=()=>{if(me()){store.set('ch_session',null);render();scrollTo(0,0)}else openDlg('login')};
+
+function render(){
+ const m=me();
+ $('site').hidden=!!m;$('member').hidden=!m;$('nav').hidden=!!m;
+ $('authBtn').textContent=m?'Log out':'Log in';
+ if(!m)return;
+ const{e,u}=m;
+ $('hello').textContent='Welcome back, '+u.name.split(' ')[0]+'.';
+ $('sPlan').textContent=u.plan;$('sSess').textContent=u.sessions.length;$('sBook').textContent=u.booked.length;
+ $('lastSess').textContent=u.sessions.length?'Last session: '+new Date(u.sessions.at(-1)).toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'short'}):'No sessions logged yet.';
+ $('bookList').innerHTML=CLASSES.map(c=>{const on=u.booked.includes(c.id);return `<li class="${on?'booked':''}"><span><b>${c.name}</b> with ${c.coach}, ${c.day} ${c.time}</span><button class="btn ${on?'ghost':''}" data-id="${c.id}">${on?'Cancel booking':'Book class'}</button></li>`}).join('');
+}
+$('bookList').onclick=ev=>{
+ const id=ev.target.dataset.id;if(!id)return;
+ const{e,u}=me();
+ u.booked=u.booked.includes(id)?u.booked.filter(x=>x!==id):[...u.booked,id];
+ save(e,u);render();
+};
+$('logSession').onclick=()=>{const{e,u}=me();u.sessions.push(Date.now());save(e,u);render()};
+render();
+</script>
+</body>
+</html>
